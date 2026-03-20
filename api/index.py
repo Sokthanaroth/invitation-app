@@ -1,4 +1,4 @@
-from flask import Flask, render_template, jsonify, request, url_for
+from flask import Flask, render_template, jsonify, request, url_for, make_response
 from pymongo import MongoClient
 from datetime import datetime
 from bson.objectid import ObjectId
@@ -8,25 +8,27 @@ from io import BytesIO
 import base64
 from urllib.parse import urlencode
 
-app = Flask(__name__)
+app = Flask(__name__, template_folder='../templates', static_folder='../static')
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'dev-secret-key')
 
-# MongoDB connection - use environment variable or default
-mongo_uri = os.getenv('MONGO_URI', 'mongodb://localhost:27017/')
-mongo_db = os.getenv('MONGO_DB_NAME', 'donation_app')
+# MongoDB connection
+DB_AVAILABLE = False
+donations = None
 
-try:
-    client = MongoClient(mongo_uri)
-    db = client[mongo_db]
-    donations = db.donations
-    donations.create_index("timestamp")
-    DB_AVAILABLE = True
-except Exception as e:
-    print(f"MongoDB connection failed: {e}")
-    DB_AVAILABLE = False
-    client = None
-    db = None
-    donations = None
+mongo_uri = os.getenv('MONGO_URI')
+if mongo_uri:
+    try:
+        mongo_db = os.getenv('MONGO_DB_NAME', 'donation_app')
+        client = MongoClient(mongo_uri)
+        db = client[mongo_db]
+        donations = db.donations
+        donations.create_index("timestamp")
+        DB_AVAILABLE = True
+    except Exception as e:
+        print(f"MongoDB connection failed: {e}")
+        DB_AVAILABLE = False
+else:
+    print("MONGO_URI not set")
 
 # KHQR INFO
 KHQR_INFO = {
@@ -62,8 +64,8 @@ def db_status():
         return jsonify({
             "success": False,
             "message": "MongoDB not configured",
-            "error": "Please set MONGO_URI environment variable"
-        }), 500
+            "total_donations": 0
+        })
     try:
         client.admin.command('ping')
         total = donations.count_documents({})
@@ -185,6 +187,7 @@ def confirm_payment(donation_id):
 def health():
     return jsonify({'status': 'healthy'})
 
-# Vercel handler
-def handler(request):
-    return app(request.environ, lambda status, headers: None)
+# Vercel handler - proper WSGI wrapper
+def handler(environ, start_response):
+    response = app(environ, start_response)
+    return response

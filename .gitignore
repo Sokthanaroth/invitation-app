@@ -29,3 +29,6 @@ logs/
 # MongoDB local data
 data/
 dbdata/
+
+# Secrets
+serviceAccountKey.json

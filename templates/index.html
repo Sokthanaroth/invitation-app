@@ -1,0 +1,1048 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>កម្មវិធីជួបជុំអាហារសាមគ្គី</title>
+    <link href="https://fonts.googleapis.com/css2?family=Krasar:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Krasar', sans-serif;
+            background: linear-gradient(135deg, #0033A0 0%, #002266 100%);
+            min-height: 100vh;
+            color: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Countdown Timer Styles */
+        .countdown-container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 60px;
+            padding: 30px;
+            margin: 30px 0 20px 0;
+            border: 2px solid #FFD700;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        .countdown-title {
+            text-align: center;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            color: #FFD700;
+            font-weight: 600;
+        }
+
+        .countdown-grid {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .countdown-item {
+            background: linear-gradient(135deg, #0033A0, #002266);
+            border-radius: 20px;
+            padding: 20px;
+            min-width: 120px;
+            text-align: center;
+            border: 2px solid #FFD700;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+        }
+
+        .countdown-value {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #FFD700;
+            line-height: 1.2;
+        }
+
+        .countdown-label {
+            font-size: 1rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: white;
+            opacity: 0.9;
+        }
+
+        .countdown-message {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1.2rem;
+            color: #FFD700;
+            font-weight: 500;
+        }
+
+        /* Invitation Card */
+        .invitation-card {
+            background: white;
+            color: #333;
+            border-radius: 30px;
+            padding: 50px 30px;
+            text-align: center;
+            margin: 30px 0;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .khqr-badge {
+            position: absolute;
+            top: 20px;
+            right: -30px;
+            background: #FFD700;
+            color: #0033A0;
+            padding: 8px 40px;
+            transform: rotate(45deg);
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+
+        .account-info-mini {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
+        .account-info-mini h3 {
+            color: #0033A0;
+            font-size: 1.5rem;
+        }
+
+        .invite-btn {
+            background: linear-gradient(135deg, #0033A0, #002266);
+            color: white;
+            border: none;
+            padding: 20px 40px;
+            font-size: 1.3rem;
+            border-radius: 50px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: all 0.3s;
+            box-shadow: 0 10px 20px rgba(0,51,160,0.3);
+        }
+
+        .invite-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 30px rgba(0,51,160,0.5);
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            backdrop-filter: blur(5px);
+            overflow-y: auto;
+        }
+
+        .modal-content {
+            background: white;
+            margin: 3% auto;
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 30px;
+            position: relative;
+            animation: modalSlide 0.4s;
+        }
+
+        @keyframes modalSlide {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .close-btn {
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            font-size: 28px;
+            cursor: pointer;
+            color: #999;
+            transition: color 0.3s;
+            border: none;
+            background: none;
+            width: 40px;
+            height: 40px;
+        }
+
+        .close-btn:hover {
+            color: #dc3545;
+            transform: rotate(90deg);
+        }
+
+        /* Steps */
+        .step {
+            display: none;
+        }
+
+        .step.active {
+            display: block;
+        }
+
+        /* Form */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 500;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            font-size: 1rem;
+            transition: border-color 0.3s;
+        }
+
+        .form-group input:focus {
+            border-color: #0033A0;
+            outline: none;
+        }
+
+        .submit-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #0033A0, #002266);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        /* Warning Message */
+        .amount-warning {
+            background: #fff3cd;
+            color: #856404;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-size: 0.9rem;
+            text-align: center;
+            border-left: 5px solid #ffc107;
+        }
+
+        /* KHQR Popup Image */
+        .khqr-popup {
+            text-align: center;
+            padding: 20px 10px;
+        }
+
+        .khqr-image-container {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 30px 20px;
+            border-radius: 20px;
+            margin: 20px 0;
+            border: 3px solid #0033A0;
+            position: relative;
+        }
+
+        .khqr-image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            animation: imagePop 0.5s;
+        }
+
+        @keyframes imagePop {
+            0% {
+                transform: scale(0.8);
+                opacity: 0;
+            }
+            100% {
+                transform: scale(1);
+                opacity: 1;
+            }
+        }
+
+        .khqr-info {
+            margin: 20px 0;
+        }
+
+        .khqr-info h3 {
+            color: #0033A0;
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        .khqr-type {
+            color: #FFD700;
+            font-weight: bold;
+            font-size: 1.2rem;
+            text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+        }
+
+        .khqr-hotline {
+            background: #f0f0f0;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-size: 1.1rem;
+            color: #333;
+        }
+
+        .amount-display {
+            background: linear-gradient(135deg, #0033A0, #002266);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+
+        /* ABA Link Container */
+        .aba-link-container {
+            background: #e8f0fe;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+            border-left: 5px solid #0033A0;
+            text-align: center;
+        }
+
+        .aba-link-container p {
+            color: #333;
+            margin-bottom: 15px;
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+
+        .aba-pay-link {
+            display: inline-block;
+            background: #0033A0;
+            color: white;
+            padding: 15px 30px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: all 0.3s;
+            border: 2px solid #FFD700;
+            box-shadow: 0 5px 15px rgba(0,51,160,0.3);
+            width: 100%;
+            max-width: 300px;
+        }
+
+        .aba-pay-link:hover {
+            background: #002266;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(0,51,160,0.5);
+        }
+
+        .qr-payment-container {
+            background: #f0f0f0;
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
+        .qr-payment-container img {
+            max-width: 200px;
+            margin: 10px auto;
+            display: block;
+            border: 2px solid #0033A0;
+            border-radius: 10px;
+        }
+
+        /* Instructions */
+        .instructions {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 15px;
+            text-align: left;
+            margin: 20px 0;
+        }
+
+        .instructions h4 {
+            color: #000000 !important;
+            font-size: 1.2rem;
+            margin: 20px 0 15px 0;
+            font-weight: 700;
+            border-bottom: 2px solid #0033A0;
+            padding-bottom: 10px;
+        }
+
+        .instructions ol {
+            margin-left: 20px;
+            color: #000000 !important;
+        }
+
+        .instructions li {
+            margin: 12px 0;
+            color: #000000 !important;
+        }
+
+        .instructions li strong {
+            color: #0033A0;
+        }
+
+        /* Buttons */
+        .confirm-btn {
+            width: 100%;
+            padding: 15px;
+            background: #28a745;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            margin: 10px 0;
+            transition: background 0.3s;
+        }
+
+        .confirm-btn:hover {
+            background: #218838;
+        }
+
+        .back-btn {
+            width: 100%;
+            padding: 15px;
+            background: #6c757d;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .back-btn:hover {
+            background: #5a6268;
+        }
+
+        /* Success */
+        .success-animation {
+            text-align: center;
+            padding: 30px;
+        }
+
+        .checkmark {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: #28a745;
+            color: white;
+            font-size: 50px;
+            line-height: 80px;
+            margin: 0 auto 20px;
+        }
+
+        /* Loading */
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 30px;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #0033A0;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Donations List */
+        .donations-section {
+            background: white;
+            color: #333;
+            border-radius: 30px;
+            padding: 30px;
+            margin-top: 40px;
+        }
+
+        .donations-section h2 {
+            text-align: center;
+            margin-bottom: 30px;
+            color: #0033A0;
+        }
+
+        .donations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .donation-card {
+            background: linear-gradient(135deg, #0033A0, #002266);
+            color: white;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            animation: cardAppear 0.5s;
+        }
+
+        @keyframes cardAppear {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .donation-card h4 {
+            font-size: 1.1rem;
+            margin-bottom: 5px;
+        }
+
+        .donation-amount {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .donation-date {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        /* Map Frame */
+        .map-frame {
+            border: 4px solid #FFD700;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-top: 20px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: white;
+            opacity: 0.8;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            .invitation-card { padding: 30px; }
+            .modal-content { margin: 5% auto; width: 95%; padding: 20px; }
+            .countdown-item { min-width: 80px; padding: 15px; }
+            .countdown-value { font-size: 2rem; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1>🎉 កម្មវិធីជួបជុំពិសាអាហារសាមគ្គី 🎉</h1>
+            <p class="subtitle">ដើម្បីបង្កើនភាពស្និទ្ធស្នាល និងការថ្លែងអំណរគុណចំពោះការស្រឡាញ់រាប់អាន និងការខិតខំប្រឹងប្រែងរួមគ្នាក្នុងដំណើរការងាររយៈពេល ៣ ឆ្នាំ កន្លងមកនេះ។</p>
+        </header>
+
+        
+
+        <!-- Main Invitation Card -->
+        <div class="invitation-card">
+            <div class="khqr-badge">Sponsor</div>
+            
+            <h2>សូមគោរពអញ្ជើញ</h2>
+        
+            <div class="account-info-mini">
+                <h3>ឯកឧត្តម លោកឧកញ៉ា លោកជំទាវ លោក លោកស្រី អ្នកនាង កញ្ញា អញ្ជើញចូលរួម
+ជាភ្ញៀវកិត្តិយសក្នុងពិធី</h3>
+                <h3>"កម្មវិធីជួបជុំអាហារសាមគ្គី"</h3>
+            </div>
+            
+            <div style="margin: 20px 0;">
+                <p style="font-size:20px;">📅 27 មីនា 2026</p>
+                <p style="font-size:20px;">🕒 4:30 PM</p>
+                <p style="font-size:20px;">📍 បែកចាន</p>
+            </div>
+            
+            <button class="invite-btn" onclick="openModal()" style="font-family: 'Krasar', sans-serif;">
+                💝 ចុចទីនេះដើម្បីឧបត្ថម្ភកម្មវិធី
+            </button>
+        </div>
+        <!-- Countdown Timer Section -->
+        <div class="countdown-container">
+     
+            <div class="countdown-grid">
+                <div class="countdown-item">
+                    <div class="countdown-value" id="days">00</div>
+                    <div class="countdown-label">ថ្ងៃ</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-value" id="hours">00</div>
+                    <div class="countdown-label">ម៉ោង</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-value" id="minutes">00</div>
+                    <div class="countdown-label">នាទី</div>
+                </div>
+                <div class="countdown-item">
+                    <div class="countdown-value" id="seconds">00</div>
+                    <div class="countdown-label">វិនាទី</div>
+                </div>
+            </div>
+            <div class="countdown-message" id="countdownMessage"></div>
+        </div>
+
+        <!-- Modal Popup -->
+        <div id="donationModal" class="modal">
+            <div class="modal-content">
+                <button class="close-btn" onclick="closeModal()">&times;</button>
+                
+                <!-- Step 1: Input Form -->
+                <div id="step1" class="step active">
+                    <h2 style="color: #0033A0; margin-bottom: 20px;">Make a Donation</h2>
+                    
+                    <div class="form-group">
+                        <label for="name">Your Name</label>
+                        <input type="text" id="name" placeholder="Enter your name" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="amount">Amount ($)</label>
+                        <input type="number" id="amount" min="0.01" step="0.01" placeholder="0.00" required>
+                    </div>
+                    
+                    <button onclick="generateKHQR()" class="submit-btn" id="generateBtn">
+                        Generate Payment
+                    </button>
+                </div>
+
+                <!-- Step 2: Payment Options -->
+                <div id="step2" class="step">
+                    <h2 style="color: #0033A0; text-align: center;">Complete Your Payment</h2>
+                    
+                    <div class="khqr-popup">
+                        <!-- KHQR Image Container -->
+                        <div class="khqr-image-container">
+                            <img id="khqrImage" src="" alt="KHQR Code">
+                        </div>
+                        
+                        <!-- KHQR Information -->
+                        <div class="khqr-info">
+                            <h3 id="displayName">EL SOKTHANAROTH</h3>
+                            <div class="khqr-type" id="displayType">Member of KHQR</div>
+                        </div>
+                        
+                        <!-- Amount Display -->
+                        <div class="amount-display" id="displayAmount">
+                            Amount: $0.00
+                        </div>
+                        
+                        <!-- Hotline -->
+                        <div class="khqr-hotline" id="displayHotline">
+                            📞 087853239
+                        </div>
+
+                        <!-- Amount Warning -->
+                        <div class="amount-warning" id="amountWarning" style="display: none;">
+                            ⚠️ Amount may not appear automatically. Please enter $<span id="warningAmount"></span> manually in ABA app.
+                        </div>
+                        
+                        <!-- ABA Link Container -->
+                        <div class="aba-link-container">
+                            <p>🔗 Click to pay with ABA PayWay:</p>
+                            <a id="abaPayLink" href="#" target="_blank" class="aba-pay-link">
+                                💳 Pay with ABA
+                            </a>
+                            <p style="font-size: 0.8rem; margin-top: 10px; color: #666;">
+                                Amount: $<span id="linkAmount"></span>
+                            </p>
+                        </div>
+                        
+                        <!-- Instructions -->
+                        <div class="instructions">
+                            <h4>📱 How to pay:</h4>
+                            <ol>
+                                <li>Click the <strong>Pay with the bank app</strong> button above</li>
+                                <li>Or scan the KHQR code with the bank app</li>
+                                <li>Verify the amount: <strong id="verifyAmount"></strong></li>
+                                <li>Complete payment in the bank app</li>
+                                <li>Click "I've Made Payment" below</li>
+                            </ol>
+                        </div>
+                        
+                        <!-- Action Buttons -->
+                        <button onclick="confirmPayment()" class="confirm-btn">
+                            ✅ I've Made Payment
+                        </button>
+                        
+                        <button onclick="goBack()" class="back-btn">
+                            ↩️ Back
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 3: Success -->
+                <div id="step3" class="step">
+                    <div class="success-animation">
+                        <div class="checkmark">✓</div>
+                        <h2 style="color: #28a745;">Thank You!</h2>
+                        <p>Your donation has been recorded</p>
+                        <p style="color: #666; margin: 10px 0;" id="successDetails"></p>
+                        <button onclick="closeModal()" class="submit-btn" style="margin-top: 20px;">
+                            Close
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Loading -->
+                <div id="loading" class="loading">
+                    <div class="spinner"></div>
+                    <p>Processing...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Event Location -->
+        <div class="donations-section">
+            <h2>📍 ទីតាំងកម្មវិធី</h2>
+
+            <div class="map-frame">
+                <iframe
+                    src="https://www.google.com/maps?q=11.508956,104.745822&hl=en&z=17&output=embed"
+                    width="100%"
+                    height="350"
+                    style="border:0;"
+                    loading="lazy">
+                </iframe>
+            </div>
+
+            <a href="https://www.google.com/maps?q=11.508956,104.745822"
+               target="_blank"
+               style="display: block; width: fit-content; margin: 15px auto 0 auto; background: #0033A0; color: white; padding: 12px 25px; border-radius: 30px; text-decoration: none; font-weight: 600;">
+                📍 Open in Google Maps
+            </a>
+        </div>
+
+        <!-- Donations List -->
+        <div class="donations-section">
+            <h2>🎊 Sponsor Received</h2>
+            <div id="donationsList" class="donations-grid">
+                <p style="text-align: center; grid-column: 1/-1;">Loading donations...</p>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <p>If you have any questions, please contact:</p>
+            <p>EL SOKTHANAROTH | 📞 087853239</p>
+        </footer>
+    </div>
+
+    <script>
+        // Countdown Timer Function
+        function updateCountdown() {
+            // Set the event date: March 27, 2026 at 4:30 PM
+            const eventDate = new Date('March 27, 2026 16:30:00').getTime();
+            const now = new Date().getTime();
+            const distance = eventDate - now;
+
+            // Time calculations
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            // Display the result
+            document.getElementById('days').textContent = String(days).padStart(2, '0');
+            document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+            document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+            document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+
+            // Message when event is happening or passed
+            const messageElement = document.getElementById('countdownMessage');
+            if (distance < 0) {
+                clearInterval(countdownInterval);
+                messageElement.innerHTML = '🎉 ពិធីកំពុងប្រព្រឹត្តទៅ! សូមអញ្ជើញចូលរួមឥឡូវនេះ! 🎉';
+                document.querySelectorAll('.countdown-value').forEach(el => el.textContent = '00');
+            } else {
+                messageElement.innerHTML = 'រង់ចាំជួបគ្នាក្នុងពិធី!';
+            }
+        }
+
+        // Update countdown every second
+        const countdownInterval = setInterval(updateCountdown, 1000);
+        updateCountdown(); // Initial call
+
+        // Global variables
+        let currentDonationId = null;
+        let currentAmount = null;
+        let currentName = null;
+
+        // KHQR Info from server
+        const khqrInfo = {{ khqr_info|tojson }};
+
+        // Modal functions
+        function openModal() {
+            document.getElementById('donationModal').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+            resetToStep1();
+        }
+
+        function closeModal() {
+            document.getElementById('donationModal').style.display = 'none';
+            document.body.style.overflow = 'auto';
+            resetToStep1();
+        }
+
+        function resetToStep1() {
+            document.getElementById('step1').classList.add('active');
+            document.getElementById('step2').classList.remove('active');
+            document.getElementById('step3').classList.remove('active');
+            document.getElementById('name').value = '';
+            document.getElementById('amount').value = '';
+        }
+
+        function goBack() {
+            document.getElementById('step1').classList.add('active');
+            document.getElementById('step2').classList.remove('active');
+        }
+
+        function showLoading() {
+            document.getElementById('loading').style.display = 'block';
+            document.getElementById('generateBtn').disabled = true;
+        }
+
+        function hideLoading() {
+            document.getElementById('loading').style.display = 'none';
+            document.getElementById('generateBtn').disabled = false;
+        }
+
+        // Generate payment
+        async function generateKHQR() {
+            const name = document.getElementById('name').value.trim();
+            const amount = document.getElementById('amount').value;
+
+            // Validate
+            if (!name) {
+                alert('Please enter your name');
+                return;
+            }
+            if (!amount || parseFloat(amount) <= 0) {
+                alert('Please enter a valid amount');
+                return;
+            }
+
+            showLoading();
+
+            try {
+                const response = await fetch('/api/create-donation', {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({
+                        name: name,
+                        amount: parseFloat(amount)
+                    })
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    // Save for later use
+                    currentDonationId = data.donation_id;
+                    currentName = name;
+                    currentAmount = amount;
+
+                    // Show KHQR image
+                    document.getElementById('khqrImage').src = data.khqr_image;
+                    
+                    // Update display information
+                    document.getElementById('displayName').textContent = data.khqr_info.name;
+                    document.getElementById('displayType').textContent = data.khqr_info.type;
+                    document.getElementById('displayHotline').textContent = `📞 ${data.khqr_info.hotline}`;
+                    
+                    // Update amounts
+                    const amountFormatted = parseFloat(amount).toFixed(2);
+                    document.getElementById('displayAmount').textContent = `Amount: $${amountFormatted}`;
+                    document.getElementById('verifyAmount').textContent = `$${amountFormatted}`;
+                    document.getElementById('linkAmount').textContent = amountFormatted;
+                    document.getElementById('warningAmount').textContent = amountFormatted;
+
+                    // Show warning about amount
+                    document.getElementById('amountWarning').style.display = 'block';
+
+                    // Set ABA link with amount parameter (may not work)
+                    const baseLink = "https://link.payway.com.kh/aba";
+                    const params = new URLSearchParams({
+                        id: '58355315E753',
+                        dynamic: 'true',
+                        usdAcc: '500113895',
+                        acc: '601121772',
+                        amount: amountFormatted,
+                        donation_id: currentDonationId
+                    });
+                    document.getElementById('abaPayLink').href = `${baseLink}?${params.toString()}`;
+
+                    // Move to step 2
+                    document.getElementById('step1').classList.remove('active');
+                    document.getElementById('step2').classList.add('active');
+                } else {
+                    alert('Error: ' + data.error);
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Network error. Please try again.');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        // Confirm payment
+        async function confirmPayment() {
+            if (!currentDonationId) {
+                alert('No donation found');
+                return;
+            }
+
+            showLoading();
+
+            try {
+                const response = await fetch(`/api/confirm-payment/${currentDonationId}`, {
+                    method: 'POST'
+                });
+
+                const data = await response.json();
+
+                if (data.success) {
+                    document.getElementById('step2').classList.remove('active');
+                    document.getElementById('step3').classList.add('active');
+                    
+                    document.getElementById('successDetails').innerHTML = `
+                        Name: ${currentName}<br>
+                        Amount: $${parseFloat(currentAmount).toFixed(2)}
+                    `;
+                    
+                    loadDonations();
+                    
+                    setTimeout(() => {
+                        closeModal();
+                    }, 3000);
+                } else {
+                    alert('Error confirming payment');
+                }
+            } catch (error) {
+                alert('Network error');
+            } finally {
+                hideLoading();
+            }
+        }
+
+        // Load donations list
+        async function loadDonations() {
+            try {
+                const response = await fetch('/api/get-donations');
+                const data = await response.json();
+                
+                const list = document.getElementById('donationsList');
+                
+                if (data.success && data.donations.length > 0) {
+                    list.innerHTML = '';
+                    
+                    data.donations.forEach(donation => {
+                        const card = document.createElement('div');
+                        card.className = 'donation-card';
+                        
+                        let dateStr = 'Just now';
+                        if (donation.timestamp) {
+                            try {
+                                const date = new Date(donation.timestamp);
+                                dateStr = date.toLocaleDateString();
+                            } catch (e) {}
+                        }
+                        
+                        card.innerHTML = `
+                            <h4>${donation.name || 'Anonymous'}</h4>
+                            <div class="donation-amount">$${donation.amount.toFixed(2)}</div>
+                            <div class="donation-date">${dateStr}</div>
+                        `;
+                        list.appendChild(card);
+                    });
+                } else {
+                    list.innerHTML = '<p style="text-align: center; grid-column: 1/-1;">Not sponsored yet. Be the first!</p>';
+                }
+            } catch (error) {
+                console.error('Error loading donations:', error);
+            }
+        }
+
+        // Event listeners
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        window.addEventListener('click', function(e) {
+            const modal = document.getElementById('donationModal');
+            if (e.target === modal) {
+                closeModal();
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', loadDonations);
+    </script>
+</body>
+</html>

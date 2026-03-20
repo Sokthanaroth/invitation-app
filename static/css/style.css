@@ -1,0 +1,76 @@
+body {
+    font-family: Arial, sans-serif;
+    /* add fallback */
+    text-align: center;
+    background: #fff5f0;
+    margin: 0;
+    /* fix default spacing */
+}
+
+
+/* Hero Section */
+
+.hero {
+    height: 100vh;
+    background: url('https://images.unsplash.com/photo-1522673607200-164d1b6ce486') center/cover no-repeat;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: white;
+    text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.5);
+    /* better text visibility */
+}
+
+
+/* General Section */
+
+.section {
+    padding: 40px;
+}
+
+
+/* Form Inputs */
+
+input,
+select {
+    padding: 10px;
+    margin: 10px;
+    border-radius: 5px;
+    /* nicer look */
+    border: 1px solid #ccc;
+    /* add border */
+}
+
+
+/* Buttons */
+
+button {
+    padding: 10px 20px;
+    background: red;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    /* smoother */
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+button:hover {
+    background: darkred;
+    /* hover effect */
+}
+
+.map-frame {
+    border: 4px solid #FFD700;
+    border-radius: 15px;
+    overflow: hidden;
+    margin-top: 20px;
+}
+
+
+/* List */
+
+li {
+    list-style: none;
+    padding: 5px;
+}

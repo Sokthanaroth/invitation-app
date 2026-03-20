@@ -1,14 +1,23 @@
-from flask import Flask, render_template, jsonify, request, url_for, make_response
+import os
+import sys
+
+# Get the directory where this file is located
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+from flask import Flask, render_template, jsonify, request, url_for
 from pymongo import MongoClient
 from datetime import datetime
 from bson.objectid import ObjectId
-import os
 import qrcode
 from io import BytesIO
 import base64
 from urllib.parse import urlencode
 
-app = Flask(__name__, template_folder='../templates', static_folder='../static')
+# Create Flask app with correct paths
+template_dir = os.path.join(os.path.dirname(BASE_DIR), 'templates')
+static_dir = os.path.join(os.path.dirname(BASE_DIR), 'static')
+app = Flask(__name__, template_folder=template_dir, static_folder=static_dir)
+
 app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'dev-secret-key')
 
 # MongoDB connection
@@ -28,7 +37,7 @@ if mongo_uri:
         print(f"MongoDB connection failed: {e}")
         DB_AVAILABLE = False
 else:
-    print("MONGO_URI not set")
+    print("MONGO_URI not set - running without database")
 
 # KHQR INFO
 KHQR_INFO = {
@@ -187,7 +196,6 @@ def confirm_payment(donation_id):
 def health():
     return jsonify({'status': 'healthy'})
 
-# Vercel handler - proper WSGI wrapper
+# Vercel handler - WSGI compatible
 def handler(environ, start_response):
-    response = app(environ, start_response)
-    return response
+    return app(environ, start_response)

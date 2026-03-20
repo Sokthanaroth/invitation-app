@@ -201,6 +201,9 @@ def confirm_payment(donation_id):
 def health():
     return jsonify({'status': 'healthy'})
 
+ # Vercel handler
+app_entry = app
+
 if __name__ == '__main__':
     print("=" * 60)
     print("🚀 ABA PAYWAY - MANUAL AMOUNT ENTRY")

@@ -1,8 +1,7 @@
 {
     "builds": [{
-            "src": "app.py",
-            "use": "@vercel/python",
-            "config": { "maxLambdaSize": "15mb" }
+            "src": "api/index.py",
+            "use": "@vercel/python"
         },
         {
             "src": "static/**",
@@ -15,18 +14,15 @@
     ],
     "routes": [{
             "src": "/static/(.*)",
-            "dest": "static/$1"
+            "dest": "/static/$1"
         },
         {
             "src": "/templates/(.*)",
-            "dest": "templates/$1"
+            "dest": "/templates/$1"
         },
         {
             "src": "/(.*)",
-            "dest": "app.py"
+            "dest": "/api/index.py"
         }
-    ],
-    "env": {
-        "FLASK_APP": "app.py"
-    }
+    ]
 }
